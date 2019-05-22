@@ -94,7 +94,7 @@
                     "baseosimg": "windows10"
                 },
                 "replicationRegions": [
-                  "westus"
+                  "<region1>"
                 ]
             }
         ]
