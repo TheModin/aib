@@ -4,6 +4,7 @@
     "location": "westus",
     "dependsOn": [],
     "properties": {
+        "buildTimeoutInMinutes" : 80,
         "source": {
             "type": "PlatformImage",
             "publisher": "MicrosoftWindowsDesktop",
