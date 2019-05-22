@@ -16,7 +16,7 @@
             {
                 "type": "PowerShell",
                 "name": "CreateBuildPath",
-                "scriptUri": "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/testPsScript.ps1"
+                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/CreateFolders.ps1"
             },
             {
                 "type": "File",
