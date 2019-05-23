@@ -69,7 +69,7 @@
                 "name": "InstallMoreStuff",
                 "inline": [
                     "Set-ExecutionPolicy Bypass -Scope Process -Force",
-                    "Get-ChildItem -Path C:\\apps -Filter *.msi -Recurse | Install-Cmsi",
+                    "Get-ChildItem -Path C:\\apps -Filter *.msi -Recurse | ForEach-Object {Install-CMsi $_.FullName}",
                     "Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression",
                     "choco install bitwarden -y",
                     "choco install adobereader -y",
