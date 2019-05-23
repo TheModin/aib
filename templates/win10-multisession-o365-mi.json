@@ -1,0 +1,101 @@
+{
+    "type": "Microsoft.VirtualMachineImages",
+    "apiVersion": "2019-05-01-preview",
+    "location": "westus",
+    "dependsOn": [],
+    "properties": {
+        "buildTimeoutInMinutes" : 180,
+        "source": {
+            "type": "PlatformImage",
+            "publisher": "MicrosoftWindowsDesktop",
+            "offer": "office-365",
+            "sku": "rs5-evd-o365pp",
+            "version": "17763.437.2"
+            
+        },
+        "customize": [
+            {
+                "type": "PowerShell",
+                "name": "CreateBuildPath",
+                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/CreateFolders.ps1"
+            },
+            {
+                "type": "File",
+                "name": "download7zip",
+                "sourceUri": "https://github.com/qkn/aib/raw/master/apps/7-zip/7z1900-x64.msi",
+                "destination":"c:\\apps\\7z1900-x64.msi"
+            },
+            {
+                "type": "File",
+                "name": "downloadTerminals",
+                "sourceUri": "https://github.com/qkn/aib/raw/master/apps/terminals/TerminalsSetup_4.0.1.msi",
+                "destination":"c:\\apps\\TerminalsSetup_4.0.1.msi"
+            },
+            {
+                "type": "PowerShell",
+                "name": "InstallStuff",
+                "inline": [
+                    "Set-ExecutionPolicy Bypass -Scope Process -Force",
+                    "Install-PackageProvider -Name NuGet -Force",
+                    "Set-PSRepository -Name PSGallery -InstallationPolicy Trusted",
+                    "Install-Module -Name Carbon -Force",
+                    "Import-Module -Name Carbon -Force",
+                    "Install-Module pswindowsupdate -force",
+                    "Import-Module pswindowsupdate -force",
+                    "Install-WindowsUpdate -AcceptAll -IgnoreReboot"
+                ]
+            },
+            {
+                "type": "WindowsRestart",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM  > c:\\apps\\azureImageBuilderRestart.txt",
+                "restartTimeout": "5m"
+            },
+            {
+                "type": "PowerShell",
+                "name": "runWindowsUpdateAgain",
+                "inline": [
+                    "Set-ExecutionPolicy Bypass -Scope Process -Force",
+                    "Import-Module pswindowsupdate -force",
+                    "Install-WindowsUpdate -AcceptAll -IgnoreReboot"
+                ]
+            },
+            {
+                "type": "WindowsRestart",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-again  > c:\\apps\\azureImageBuilderRestart.txt",
+                "restartTimeout": "5m"
+            },
+            {
+                "type": "PowerShell",
+                "name": "InstallMoreStuff",
+                "inline": [
+                    "Set-ExecutionPolicy Bypass -Scope Process -Force",
+                    "Get-ChildItem -Path C:\\apps -Filter *.msi -Recurse | Install-Cmsi",
+                    "Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression",
+                    "choco install bitwarden -y",
+                    "choco install adobereader -y",
+                    "choco install vscode -y",
+                    "choco install kitty -y,",
+                    "choco install winscp -y",
+                    "choco install winsshterm -y"
+                ]
+            },
+            {
+                "type": "WindowsRestart",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-again  > c:\\apps\\azureImageBuilderRestart.txt",
+                "restartTimeout": "5m"
+            }
+        ],
+        "distribute": 
+            [
+                {   "type":"ManagedImage",
+                    "imageId": "/subscriptions/<subscriptionID>/resourceGroups/<rgName>/providers/Microsoft.Compute/images/<imageName>",
+                    "location": "<region>",
+                    "runOutputName": "<runOutputName>",
+                    "artifactTags": {
+                        "source": "azVmImageBuilder",
+                        "baseosimg": "windows2019"
+                    }
+                }
+            ]
+    }
+}

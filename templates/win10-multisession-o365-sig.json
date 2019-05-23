@@ -84,7 +84,8 @@
                 "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-again  > c:\\apps\\azureImageBuilderRestart.txt",
                 "restartTimeout": "5m"
             }
-        ],        "distribute": 
+        ],
+        "distribute": 
         [
             {   
                 "type": "SharedImage",
