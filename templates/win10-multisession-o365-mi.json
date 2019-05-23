@@ -25,6 +25,11 @@
                 "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/SetExecutionPolicyUnrestricted.ps1"
             },
             {
+                "type": "PowerShell",
+                "name": "RunWindowsUpdate",
+                "scriptUri": "https://github.com/StefanScherer/packer-windows/raw/my/scripts/win-updates.ps1"
+            },
+            {
                 "type": "File",
                 "name": "download7zip",
                 "sourceUri": "https://github.com/qkn/aib/raw/master/apps/7-zip/7z1900-x64.msi",
