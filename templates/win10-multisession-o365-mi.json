@@ -20,6 +20,11 @@
                 "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/CreateFolders.ps1"
             },
             {
+                "type": "PowerShell",
+                "name": "SetExecutionPolicyUnrestricted",
+                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/SetExecutionPolicyUnrestricted.ps1"
+            },
+            {
                 "type": "File",
                 "name": "download7zip",
                 "sourceUri": "https://github.com/qkn/aib/raw/master/apps/7-zip/7z1900-x64.msi",
@@ -78,6 +83,11 @@
                     "choco install winscp -y",
                     "choco install winsshterm -y"
                 ]
+            },
+            {
+                "type": "PowerShell",
+                "name": "SetExecutionRemoteSigned",
+                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/SetExecutionPolicyRemoteSigned.ps1"
             },
             {
                 "type": "WindowsRestart",
