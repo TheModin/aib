@@ -26,8 +26,8 @@
             },
             {
                 "type": "PowerShell",
-                "name": "RunWindowsUpdate",
-                "scriptUri": "https://github.com/StefanScherer/packer-windows/raw/my/scripts/win-updates.ps1"
+                "name": "RunWindowsUpdate1",
+                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/win-updates.ps1"
             },
             {
                 "type": "File",
@@ -45,40 +45,33 @@
                 "type": "PowerShell",
                 "name": "InstallStuff",
                 "inline": [
-                    "Set-ExecutionPolicy Bypass -Scope Process -Force",
                     "Install-PackageProvider -Name NuGet -Force",
                     "Set-PSRepository -Name PSGallery -InstallationPolicy Trusted",
                     "Install-Module -Name Carbon -Force",
                     "Import-Module -Name Carbon -Force",
                     "Install-Module pswindowsupdate -force",
-                    "Import-Module pswindowsupdate -force",
-                    "Install-WindowsUpdate -AcceptAll -IgnoreReboot"
+                    "Import-Module pswindowsupdate -force"
                 ]
             },
             {
                 "type": "WindowsRestart",
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM  > c:\\apps\\azureImageBuilderRestart.txt",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-1  > c:\\apps\\azureImageBuilderRestart.txt",
                 "restartTimeout": "5m"
             },
             {
                 "type": "PowerShell",
-                "name": "runWindowsUpdateAgain",
-                "inline": [
-                    "Set-ExecutionPolicy Bypass -Scope Process -Force",
-                    "Import-Module pswindowsupdate -force",
-                    "Install-WindowsUpdate -AcceptAll -IgnoreReboot"
-                ]
+                "name": "RunWindowsUpdate2",
+                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/win-updates.ps1"
             },
             {
                 "type": "WindowsRestart",
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-again  > c:\\apps\\azureImageBuilderRestart.txt",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-2  > c:\\apps\\azureImageBuilderRestart.txt",
                 "restartTimeout": "5m"
             },
             {
                 "type": "PowerShell",
                 "name": "InstallMoreStuff",
                 "inline": [
-                    "Set-ExecutionPolicy Bypass -Scope Process -Force",
                     "Get-ChildItem -Path C:\\apps -Filter *.msi -Recurse | ForEach-Object {Install-CMsi $_.FullName}",
                     "Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression",
                     "choco install bitwarden -y",
@@ -91,12 +84,17 @@
             },
             {
                 "type": "PowerShell",
+                "name": "RunWindowsUpdate3",
+                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/win-updates.ps1"
+            },
+            {
+                "type": "PowerShell",
                 "name": "SetExecutionRemoteSigned",
                 "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/SetExecutionPolicyRemoteSigned.ps1"
             },
             {
                 "type": "WindowsRestart",
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-again  > c:\\apps\\azureImageBuilderRestart.txt",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-3  > c:\\apps\\azureImageBuilderRestart.txt",
                 "restartTimeout": "5m"
             }
         ],
