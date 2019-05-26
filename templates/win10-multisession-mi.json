@@ -8,9 +8,9 @@
         "source": {
             "type": "PlatformImage",
             "publisher": "MicrosoftWindowsDesktop",
-            "offer": "office-365",
-            "sku": "rs5-evd-o365pp",
-            "version": "17763.437.2"
+            "offer": "Windows-10",
+            "sku": "19h1-evd",
+            "version": "18362.116.1"
             
         },
         "customize": [
@@ -25,21 +25,16 @@
                 "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/SetExecutionPolicyUnrestricted.ps1"
             },
             {
-                "type": "PowerShell",
-                "name": "RunWindowsUpdate1",
-                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/win-updates.ps1"
-            },
-            {
                 "type": "File",
                 "name": "download7zip",
                 "sourceUri": "https://github.com/qkn/aib/raw/master/apps/7-zip/7z1900-x64.msi",
-                "destination":"c:\\apps\\7z1900-x64.msi"
+                "destination":"c:\\buildArtifacts\\7z1900-x64.msi"
             },
             {
                 "type": "File",
                 "name": "downloadTerminals",
                 "sourceUri": "https://github.com/qkn/aib/raw/master/apps/terminals/TerminalsSetup_4.0.1.msi",
-                "destination":"c:\\apps\\TerminalsSetup_4.0.1.msi"
+                "destination":"c:\\buildArtifacts\\TerminalsSetup_4.0.1.msi"
             },
             {
                 "type": "PowerShell",
@@ -50,29 +45,8 @@
                     "Install-Module -Name Carbon -Force",
                     "Import-Module -Name Carbon -Force",
                     "Install-Module pswindowsupdate -force",
-                    "Import-Module pswindowsupdate -force"
-                ]
-            },
-            {
-                "type": "WindowsRestart",
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-1  > c:\\apps\\azureImageBuilderRestart.txt",
-                "restartTimeout": "5m"
-            },
-            {
-                "type": "PowerShell",
-                "name": "RunWindowsUpdate2",
-                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/win-updates.ps1"
-            },
-            {
-                "type": "WindowsRestart",
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-2  > c:\\apps\\azureImageBuilderRestart.txt",
-                "restartTimeout": "5m"
-            },
-            {
-                "type": "PowerShell",
-                "name": "InstallMoreStuff",
-                "inline": [
-                    "Get-ChildItem -Path C:\\apps -Filter *.msi -Recurse | ForEach-Object {Install-CMsi $_.FullName}",
+                    "Import-Module pswindowsupdate -force",
+                    "Get-ChildItem -Path C:\\buildArtifacts -Filter *.msi -Recurse | ForEach-Object {Install-CMsi $_.FullName}",
                     "Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression",
                     "choco install bitwarden -y",
                     "choco install adobereader -y",
@@ -84,17 +58,12 @@
             },
             {
                 "type": "PowerShell",
-                "name": "RunWindowsUpdate3",
-                "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/win-updates.ps1"
-            },
-            {
-                "type": "PowerShell",
                 "name": "SetExecutionRemoteSigned",
                 "scriptUri": "https://raw.githubusercontent.com/qkn/aib/master/ps_scripts/SetExecutionPolicyRemoteSigned.ps1"
             },
             {
                 "type": "WindowsRestart",
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-3  > c:\\apps\\azureImageBuilderRestart.txt",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-3  > c:\\buildArtifacts\\azureImageBuilderRestart.txt",
                 "restartTimeout": "5m"
             }
         ],

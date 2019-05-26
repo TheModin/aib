@@ -23,13 +23,13 @@
                 "type": "File",
                 "name": "download7zip",
                 "sourceUri": "https://github.com/qkn/aib/raw/master/apps/7-zip/7z1900-x64.msi",
-                "destination":"c:\\apps\\7z1900-x64.msi"
+                "destination":"c:\\buildArtifacts\\7z1900-x64.msi"
             },
             {
                 "type": "File",
                 "name": "downloadTerminals",
                 "sourceUri": "https://github.com/qkn/aib/raw/master/apps/terminals/TerminalsSetup_4.0.1.msi",
-                "destination":"c:\\apps\\TerminalsSetup_4.0.1.msi"
+                "destination":"c:\\buildArtifacts\\TerminalsSetup_4.0.1.msi"
             },
             {
                 "type": "PowerShell",
@@ -42,34 +42,9 @@
                     "Import-Module -Name Carbon -Force",
                     "Install-Module pswindowsupdate -force",
                     "Import-Module pswindowsupdate -force",
-                    "Install-WindowsUpdate -AcceptAll -IgnoreReboot"
-                ]
-            },
-            {
-                "type": "WindowsRestart",
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM  > c:\\apps\\azureImageBuilderRestart.txt",
-                "restartTimeout": "5m"
-            },
-            {
-                "type": "PowerShell",
-                "name": "runWindowsUpdateAgain",
-                "inline": [
+                    "Install-WindowsUpdate -AcceptAll -IgnoreReboot",
                     "Set-ExecutionPolicy Bypass -Scope Process -Force",
-                    "Import-Module pswindowsupdate -force",
-                    "Install-WindowsUpdate -AcceptAll -IgnoreReboot"
-                ]
-            },
-            {
-                "type": "WindowsRestart",
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-again  > c:\\apps\\azureImageBuilderRestart.txt",
-                "restartTimeout": "5m"
-            },
-            {
-                "type": "PowerShell",
-                "name": "InstallMoreStuff",
-                "inline": [
-                    "Set-ExecutionPolicy Bypass -Scope Process -Force",
-                    "Get-ChildItem -Path C:\\apps -Filter *.msi -Recurse | ForEach-Object {Install-CMsi $_.FullName}",
+                    "Get-ChildItem -Path C:\\buildArtifacts -Filter *.msi -Recurse | ForEach-Object {Install-CMsi $_.FullName}",
                     "Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression",
                     "choco install bitwarden -y",
                     "choco install adobereader -y",
@@ -81,7 +56,7 @@
             },
             {
                 "type": "WindowsRestart",
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-again  > c:\\apps\\azureImageBuilderRestart.txt",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM-again  > c:\\buildArtifacts\\azureImageBuilderRestart.txt",
                 "restartTimeout": "5m"
             }
         ],

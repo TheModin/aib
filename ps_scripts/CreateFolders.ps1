@@ -1,3 +1,3 @@
 
-mkdir c:\apps
-echo Azure-Image-Builder-Was-Here  > c:\apps\azureImageBuilder.txt
+mkdir c:\buildArtifacts
+echo Azure-Image-Builder-Was-Here  > c:\buildArtifacts\azureImageBuilder.txt
